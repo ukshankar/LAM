@@ -1,0 +1,76 @@
+<div fxFill fxLayout="column">
+  <div class="header">
+    <h2>LaM in Action</h2>
+  </div>
+
+  <div fxFlex="100%" class="body">
+    <div fxLayout="row">
+      <div fxFlex="20" style="padding:3px;">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Name Column -->
+          <ng-container matColumnDef="actionName">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"> {{element.actionName}} <br> &nbsp;&nbsp; {{element.actionType}} <br>
+              &nbsp;&nbsp; {{element.description}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="actionType">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.actionType}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <div fxFlex fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <form class="example-form" style="width: 100%;">
+            <mat-form-field class="example-full-width">
+              <mat-label>Enter the prompt</mat-label>
+              <input matInput placeholder="Ex.  create customer complaint.." style="width: 100%;"
+                [formControl]="inputForm" />
+            </mat-form-field>
+          </form>
+          <button fxFlex="10" mat-flat-button color="primary" (click)="sendPrompt()">Send</button>
+        </div>
+        <div *ngIf="promptResult">
+          <mat-card>
+            <mat-card-header>Prompt Action</mat-card-header>
+            <mat-card-content style="padding-top: 2px;">
+              <div>Name: {{promptResult.actions[0].actionName}}</div>
+              <div>Type: {{promptResult.actions[0].actionType}}</div>
+              <div>{{promptResult.actions[0].description}}</div>
+            </mat-card-content>
+            <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+              <div>Do you want to execute this action  ? </div><div style="padding-left: 3px;;"><button mat-flat-button color="primary" (click)="executeAction()">Confirm</button></div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div *ngIf="actionSource">
+          <table mat-table [dataSource]="actionSource" class="mat-elevation-z8">
+            <!-- Name Column -->
+            <ng-container matColumnDef="actionName">
+              <th mat-header-cell *matHeaderCellDef> Executed Action </th>
+              <td mat-cell *matCellDef="let element"> {{element.prompt}} <br> &nbsp;&nbsp; {{element.response}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p></p>
+  </div>
+</div>
